@@ -6,10 +6,10 @@ function gameClass:init()
     self.game_objects = linked_listClass()
     self.game_objects:add(self.player)
     --temp
-    self.game_objects:add(blockClass(25,H/2,50,1000,0,self,"wall","line"))
-    self.game_objects:add(blockClass(W/2,25,1000,50,0,self,"wall","line"))
-    self.game_objects:add(blockClass(W/2, H - 25,1000,50,0,self,"wall","line"))
-    self.game_objects:add(blockClass(W-25,H/2,50,1000,0,self,"wall","line"))
+    self.game_objects:add(blockClass(25,H/2,50,1000,0,"line",self.collider,"wall",self))
+    self.game_objects:add(blockClass(W/2,25,1000,50,0,"line",self.collider,"wall",self))
+    self.game_objects:add(blockClass(W/2, H - 25,1000,50,0,"line",self.collider,"wall",self))
+    self.game_objects:add(blockClass(W-25,H/2,50,1000,0,"line",self.collider,"wall",self))
     self.game_objects:add(placerClass(self))
 end
 

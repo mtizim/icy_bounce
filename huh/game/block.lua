@@ -1,6 +1,6 @@
 blockClass = Class("block")
 
-function blockClass:init(x,y,w,h,r,parent,name,mode)
+function blockClass:init(x,y,w,h,r,mode,collider,name,parent)
     if not mode then mode = "fill" end
     if not name then name = nil end
     self.x = x
@@ -9,9 +9,10 @@ function blockClass:init(x,y,w,h,r,parent,name,mode)
     self.h = h
     self.r = r
     self.mode = mode
-    self.parent = parent
-    self.col_obj = parent.collider:rectangle(x-w/2,y-h/2,w,h)
+    self.collider = collider
+    self.col_obj = collider:rectangle(x-w/2,y-h/2,w,h)
     self.col_obj.name = name
+    self.col_obj.parent = parent
     self:rotate(r)
 end
 
@@ -39,6 +40,6 @@ function blockClass:rotate(r)
 end
 
 function blockClass:destroy()
-    self.parent.collider:remove(self.col_obj)
+    self.collider:remove(self.col_obj)
 end
 

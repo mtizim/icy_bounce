@@ -43,9 +43,10 @@ function placerClass:end_block(press)
     self.block = blockClass(0,0,
                     c.game.placer.block.length,
                     c.game.placer.block.width,0,
-                    self.parent,
+                    c.game.placer.block.mode,
+                    self.parent.collider,
                     "placer",
-                    c.game.placer.block.mode)
+                    self)
     self:calculate_block_midpoint()
     touch = nil
 end
@@ -76,8 +77,13 @@ function placerClass:reset()
     self:init(self.parent)
 end
 
+function placerClass:get_hit()
+end
+
 function placerClass:draw(color)
     if self.ende.bool and self.block then
+        local col = c.game.placer.color
+        love.graphics.setColor(col[1],col[2],col[3],1)
         self.block:draw({1,0,0})
     end
 end

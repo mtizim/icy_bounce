@@ -10,6 +10,8 @@ function playerClass:init(game)
     self.col_obj = 
         self.game.collider:circle(self.x,self.y,c.game.player.size.collision)
     self.col_obj.name = "player"
+
+    self.trail = trailClass()
 end
 
 function playerClass:update(dt)
@@ -18,6 +20,7 @@ function playerClass:update(dt)
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
     self.col_obj:moveTo(self.x,self.y)
+    self.trail:update(dt,{self.x,self.y})
 end
 
 -- collision and handling
@@ -28,8 +31,8 @@ function playerClass:collisions()
         if isin(object.name,c.game.player.collisions.bounces) then
             self:bounce(vector,c.game.player.collisions.bounce_loss)
         end
-        if isin(object.name,c.game.player.collisions.boosty_bounces) then
-            self:boosty_bounce(vector)
+        if object.name == c.game.player.collisions.placer then
+            self:placer_bounce(vector,object.parent)
         end
         -- others
     end
@@ -54,16 +57,20 @@ function playerClass:bounce(vector,loss)
     self.vector = {math.sin(t_vec)*3,3*math.cos(t_vec)}
 end
 
-function playerClass:boosty_bounce(vector)
+function playerClass:placer_bounce(vector,placer)
     self:bounce(vector)
     local boost = c.game.placer.boost
     local vt = math.atan2(self.vx,self.vy)
     local v = math.sqrt(self.vx*self.vx + self.vy*self.vy)
     self.vx = math.sin(vt) * (v + boost)
     self.vy = math.cos(vt) * (v + boost)
+    placer:get_hit()
 end
 
 function playerClass:draw()
+    self.trail:draw()
+    local col = c.game.player.color
+    love.graphics.setColor(col[1],col[2],col[3],1)
     love.graphics.circle("fill",self.x,self.y,c.game.player.size.normal)
     -- self.col_obj:draw()
 end

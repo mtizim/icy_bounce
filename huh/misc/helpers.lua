@@ -13,6 +13,10 @@ function isin(a,b)
     return false
 end
 
+function randrange(range)
+    return math.random() * (range[2] - range[1]) + range[1]
+end
+
 node = Class("node")
 
 function node:init(value,next)
@@ -43,14 +47,18 @@ end
 
 -- calls #update on all values which are not destroyed 
 --  and removes the destroyed nodes from the list
-function linked_listClass:update_all(dt)
+function linked_listClass:update_all(dt,args)
     local current
     local before
     if self.head then
         current = self.head
         while current do
             local altbefore = nil
-            current.value:update(dt)
+            if args then 
+                current.value:update(dt,args)
+            else
+                current.value:update(dt)
+            end
             if current.value.destroyed then
                 if current == self.head then
                     self.head = self.head.next
@@ -89,11 +97,15 @@ function linked_listClass:remove(i)
     self.length = self.length -1
 end
 
-function linked_listClass:draw_all(funct)
+function linked_listClass:draw_all(args)
     if self.head then
         local current = self.head
         while current do
-            current.value:draw()
+            if args then 
+                current.value:draw(args)
+            else
+                current.value:draw()
+            end
             current = current.next
         end
     end
